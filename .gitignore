@@ -1,0 +1,6 @@
+docker_data/lib/docker
+gitea
+nexus-data
+repository
+jenkins-data
+java

@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+
+  gitea:
+    image: docker.io/gitea/gitea:1.23.1
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    networks:
+      - jenkins
+    volumes:
+      - ./gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "80:3000"
+      - "222:22"
+
+  jenkins-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jenkins-agent-dind  # Custom agent image
+    container_name: jenkins-agent-dind
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - jenkins
+    volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock  # Allows agent to use Docker
+      - jenkins-data:/var/jenkins_home  # Shared volume with Jenkins server
+      - ./java:/var/jenkins_home/java
+      - ./docker_data/lib/docker:/var/lib/docker
+      - ./repository:/var/jenkins_home/.m2/repository
+    depends_on:
+      - jenkins
+    init: true  # Enables --init to ensure proper signal handling
+    command: >
+      -url http://jenkins-app:8080/
+      -secret 2d05730633ffed3f80cb72e1b2a9f752e04fb6f9af25c3e90b046ef91291ee54
+      -name agent1
+      -webSocket
+      -workDir /home/jenkins
+
+  # Jenkins Server
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins-app
+    restart: unless-stopped
+    networks:
+      - jenkins
+    ports:
+      - "8080:8080"   # Jenkins UI
+      - "50000:50000" # Jenkins agent
+    volumes:
+      - jenkins-data:/var/jenkins_home
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    restart: unless-stopped
+    networks:
+      - jenkins
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./nexus-data:/nexus-data
+
+networks:
+  jenkins:
+
+volumes:
+  jenkins-data:
