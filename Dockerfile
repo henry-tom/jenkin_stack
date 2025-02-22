@@ -3,7 +3,7 @@ FROM jenkins/inbound-agent:latest
 # Install dependencies
 USER root
 RUN apt-get update && \
-    apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+    apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common sshpass lsb-release
 
 # Add Docker official GPG key and repository
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \

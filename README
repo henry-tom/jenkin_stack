@@ -9,6 +9,8 @@ docker exec -it -u root:root jenkins-app /bin/bash
 apt-get install -y zip
 /var/jenkins_home/java/8.0.432-amzn
 -------------------------------------------------
+export JAVA_HOME=/var/jenkins_home/java/8.0.442-amzn
+export PATH=$JAVA_HOME/bin:$PATH
 df -h
 pwd
 ls -lah
