@@ -23,21 +23,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: jenkins-agent-dind  # Custom agent image
+    image: jenkins-agent-dind
     container_name: jenkins-agent-dind
     restart: unless-stopped
     privileged: true
     networks:
       - jenkins
     volumes:
-      # - /var/run/docker.sock:/var/run/docker.sock  # Allows agent to use Docker
-      - jenkins-data:/var/jenkins_home  # Shared volume with Jenkins server
+      - jenkins-data:/var/jenkins_home
       - ./java:/var/jenkins_home/java
       - ./docker_data/lib/docker:/var/lib/docker
       - ./repository:/var/jenkins_home/.m2/repository
     depends_on:
       - jenkins
-    init: true  # Enables --init to ensure proper signal handling
+    init: true
     command: >
       -url http://jenkins-app:8080/
       -secret 2d05730633ffed3f80cb72e1b2a9f752e04fb6f9af25c3e90b046ef91291ee54
