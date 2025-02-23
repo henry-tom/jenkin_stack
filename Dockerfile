@@ -20,17 +20,6 @@ RUN usermod -aG docker jenkins
 RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
-# Install SDKMAN!
-RUN curl -s "https://get.sdkman.io" | bash && \
-    echo "source /root/.sdkman/bin/sdkman-init.sh" >> /root/.bashrc
-
-# Ensure SDKMAN! works for Jenkins user
-USER jenkins
-RUN bash -c "curl -s \"https://get.sdkman.io\" | bash" && \
-    echo "source /home/jenkins/.sdkman/bin/sdkman-init.sh" >> /home/jenkins/.bashrc
-
-USER root
-
 # Enable Docker-in-Docker (DinD)
 RUN mkdir -p /var/lib/docker
 VOLUME /var/lib/docker
