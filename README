@@ -1,4 +1,5 @@
-------------- Run these commands in the terminal to run jenkin in docker with docker, docker-compose, and maven inside the container  
+------------- RUN JENKIN WITH MINIMAL STEPS  
+![img.png](img.png)  
 sudo systemctl daemon-reload  
 sudo service docker restart  
 mkdir -p ./jenkins-data ./java ./docker_data/lib/docker ./repository  
