@@ -1,5 +1,5 @@
 ------------- RUN JENKIN WITH MINIMAL STEPS  
-![img.png](img.png)  
+![img.png](img.png)
 sudo systemctl daemon-reload  
 sudo service docker restart  
 mkdir -p ./jenkins-data ./java ./docker_data/lib/docker ./repository  
