@@ -1,22 +1,26 @@
+------------- Run these commands in the terminal to run jenkin in docker with docker, docker-compose, and maven inside the container  
 sudo systemctl daemon-reload  
-sudo service docker restart
-docker exec -it jenkins-agent-dind ls -lah /var/run/docker.sock  
+sudo service docker restart  
+mkdir -p ./jenkins-data ./java ./docker_data/lib/docker ./repository  
+docker compose up -d --build    
+docker exec -it jenkins-agent-dind ls -lah /var/run/docker.sock   
 docker exec -it -u root:root jenkins-agent-dind /bin/bash  
 docker exec -it jenkins-agent-dind java -jar /usr/share/jenkins/agent.jar -jnlpUrl http://192.168.1.245:8080/computer/agent1/jenkins-agent.jnlp -secret 2d05730633ffed3f80cb72e1b2a9f752e04fb6f9af25c3e90b046ef91291ee54  
-docker exec jenkins-agent-dind dockerd &  === start docker deamon inside dind container
-docker exec -it -u root:root jenkins-app /bin/bash
+docker exec jenkins-agent-dind dockerd &                         === start docker deamon inside dind container  
 
-apt-get install -y zip
-/var/jenkins_home/java/8.0.432-amzn
--------------------------------------------------
-export JAVA_HOME=/var/jenkins_home/java/8.0.442-amzn
-export PATH=$JAVA_HOME/bin:$PATH
-export MAVEN_OPTS="-Dmaven.repo.local=/var/jenkins_home/.m2/repository"
-df -h
-pwd
-ls -lah
-ls -lah /root/.m2/repository
-ls -lah /var/jenkins_home/.m2/repository
-chmod +x mvnw
-./mvnw -v 
-./mvnw clean package -DskipTests --settings .mvn/settings.xml
+
+------------------------------------------------  
+/var/jenkins_home/java/8.0.432-amzn  
+--------------- Example of jenkin script check environment variables  
+export JAVA_HOME=/var/jenkins_home/java/8.0.442-amzn  
+export PATH=$JAVA_HOME/bin:$PATH  
+java -version  
+export MAVEN_OPTS="-Dmaven.repo.local=/var/jenkins_home/.m2/repository"  
+df -h  
+pwd  
+ls -lah  
+ls -lah /root/.m2/repository  
+ls -lah /var/jenkins_home/.m2/repository  
+chmod +x mvnw  
+./mvnw -v  
+./mvnw clean package --offline -DskipTests --settings .mvn/settings.xml  

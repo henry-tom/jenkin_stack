@@ -2,23 +2,6 @@ version: "3.8"
 
 services:
 
-  # gitea:
-  #   image: docker.io/gitea/gitea:1.23.1
-  #   container_name: gitea
-  #   environment:
-  #     - USER_UID=1000
-  #     - USER_GID=1000
-  #   restart: always
-  #   networks:
-  #     - jenkins
-  #   volumes:
-  #     - ./gitea:/data
-  #     - /etc/timezone:/etc/timezone:ro
-  #     - /etc/localtime:/etc/localtime:ro
-  #   ports:
-  #     - "80:3000"
-  #     - "222:22"
-
   jenkins-agent:
     build:
       context: .
@@ -56,28 +39,6 @@ services:
       - "50000:50000" # Jenkins agent
     volumes:
       - ./jenkins-data:/var/jenkins_home
-  # nexus:
-  #   image: sonatype/nexus3
-  #   container_name: nexus
-  #   restart: unless-stopped
-  #   networks:
-  #     - jenkins
-  #   ports:
-  #     - "8081:8081"
-  #   volumes:
-  #     - ./nexus-data:/nexus-data
-  # agent2:
-  #   image: jenkins/ssh-agent:alpine-jdk17
-  #   container_name: agent2
-  #   ports:
-  #     - "2222:22"
-  #   environment:
-  #     - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6KY/9QjcwSlZbtFKp3idVoxgNnlvgX7eO9mXnK/5yfdA9zSOBdrYUlYdnXb6gJ3d7ogbH21Wu70PXNdu8G905Ogi2hwtLxkD45ZFLE1V95LG1ZrK3I2KmuTHdaKhpISKdBNcsSS52NWVLE/atiMVmNcRA6jP567LmzBTUJEaJmOokrrJIDtKTsKBJ6qVd4v+uJprGWesyFZAdUF2shqB10zMcPk2SkTNXDBTcBLas6+9Ld7Ypp1cQk4rrIOTiKt9/EdQ61FALXjKEOcGep+AoPaF78zPBl1pUrzlQNfpFzQsIQNXqiXPdHudS0lJrFE9Kr722iF1/qQ7FWfgifb5zCItWmO7NUnLQlrOzwiZYECV5fbfy3PpB10nA0yd3VXv+mP2FekJL/umzFzjD5uP51FPRBAOC7HRZdBLNega/JuPFdRVj0oZ+Z0p5eR3V6NxM39iod27DNqEdUfbyMrcuY/FkU20+UKXv2BldOEQ+qgRCET8tTEzvM1rYv8VxxL8= nik@n
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./agent:/home/jenkins/agent
-  #   networks:
-  #     - jenkins
 
 networks:
   jenkins:
